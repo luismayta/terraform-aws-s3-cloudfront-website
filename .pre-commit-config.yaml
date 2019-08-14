@@ -108,3 +108,8 @@
     -   id: blacken-docs
         additional_dependencies:
         - black
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  sha: v1.17.0
+  hooks:
+    - id: terraform_fmt
+    - id: terraform_docs
