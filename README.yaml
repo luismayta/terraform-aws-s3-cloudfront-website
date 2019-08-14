@@ -1,0 +1,77 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-s3-cloudfront-website
+
+# Tags of this project
+tags:
+  - aws
+  - terraform
+  - terraform-modules
+  - s3
+  - cloudfront
+
+# Categories of this project
+categories:
+  - terraform-modules/s3
+
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "Apache2"
+
+# Canonical GitHub repo
+github_repo: equipindustry/terraform-aws-s3-cloudfront-website
+
+# Badges to display
+badges:
+  - name: "Build Status"
+    image: "https://travis-ci.org/equipindustry/terraform-aws-s3-cloudfront-website.svg?branch=master"
+    url: "https://travis-ci.org/equipindustry/terraform-aws-s3-cloudfront-website"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/equipindustry/terraform-aws-s3-cloudfront-website.svg"
+    url: "https://travis-ci.org/equipindustry/terraform-aws-s3-cloudfront-website/releases"
+
+# Short description of this project
+description: |-
+  Terraform module to provision an AWS S3 Redirect.
+
+# How to use this project
+usage: |-
+  ```hcl
+    module "main" {
+      source = "github.com/equipindustry/terraform-aws-s3-cloudfront-website"
+
+      fqdn                = var.fqdn
+      ssl_certificate_arn = data.aws_acm_certificate.domain.arn
+      allowed_ips         = var.allowed_ips
+
+      index_document = "index.html"
+      error_document = "404.html"
+
+      refer_secret = "${base64sha512("REFER-SECRET-19265125-${var.fqdn}-52865926")}"
+
+      force_destroy = "true"
+
+      providers = {
+        "aws.main"       = aws.main
+        "aws.cloudfront" = aws.cloudfront
+      }
+    }
+  ```
+
+  Full working example can be found in [example](./example) folder.
+
+include:
+  - "docs/include/targets.md"
+  - "docs/include/terraform.md"
+
+# Contributors to this project
+contributors:
+  - name: "Luis Mayta"
+    github: "luismayta"
