@@ -33,9 +33,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
 
-      values = [
-        var.allowed_ips,
-      ]
+      values = var.allowed_ips
     }
 
     principals {

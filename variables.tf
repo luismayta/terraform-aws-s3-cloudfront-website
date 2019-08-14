@@ -21,7 +21,7 @@ variable ssl_certificate_arn {
 }
 
 variable "allowed_ips" {
-  type        = "list"
+  type        = list(string)
   description = "A list of IPs that can access the S3 bucket directly"
   default     = []
 }
