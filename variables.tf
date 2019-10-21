@@ -1,22 +1,22 @@
 variable "fqdn" {
-  type        = "string"
+  type        = string
   description = "The FQDN of the website and also name of the S3 bucket"
 }
 
 variable "aliases" {
-  type        = "list"
+  type        = list
   description = "Any other domain aliases to add to the CloudFront distribution"
   default     = []
 }
 
 variable "force_destroy" {
-  type        = "string"
+  type        = string
   description = "The force_destroy argument of the S3 bucket"
   default     = "false"
 }
 
 variable ssl_certificate_arn {
-  type        = "string"
+  type        = string
   description = "ARN of the certificate covering the fqdn and its apex?"
 }
 
@@ -27,49 +27,49 @@ variable "allowed_ips" {
 }
 
 variable "web_acl_id" {
-  type        = "string"
+  type        = string
   description = "WAF Web ACL ID to attach to the CloudFront distribution, optional"
   default     = ""
 }
 
 variable "refer_secret" {
-  type        = "string"
+  type        = string
   description = "A secret string to authenticate CF requests to S3"
   default     = "123-VERY-SECRET-123"
 }
 
 variable routing_rules {
-  type        = "string"
+  type        = string
   description = "Routing rules for the S3 bucket"
   default     = ""
 }
 
 variable cloudfront_price_class {
-  type        = "string"
+  type        = string
   description = "PriceClass for CloudFront distribution"
   default     = "PriceClass_100"
 }
 
 variable index_document {
-  type        = "string"
+  type        = string
   description = "HTML to show at root"
   default     = "index.html"
 }
 
 variable error_document {
-  type        = "string"
+  type        = string
   description = "HTML to show on 404"
   default     = "404.html"
 }
 
 variable error_response_code {
-  type        = "string"
+  type        = string
   description = "Response code to send on 404"
   default     = "404"
 }
 
 variable "tags" {
-  type        = "map"
+  type        = map
   description = "Tags"
   default     = {}
 }
