@@ -5,3 +5,7 @@ provider "aws" {
 provider "aws" {
   alias = "cloudfront"
 }
+
+provider "local" {
+  version = ">=1.3.0"
+}
