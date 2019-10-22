@@ -20,10 +20,10 @@ ipython = "*"
 parso = "*"
 PyYAML = "*"
 PyHamcrest = "*"
-bumplus = "==0.0.8"
-bumpversion = "==0.5.3"
-restview = "==2.8.1"
-rst = "==0.1"
+bumplus = ">=0.0.8"
+bumpversion = ">=0.5.3"
+restview = ">=2.8.1"
+rst = ">=0.1"
 pre-commit = "*"
 sphinx-rtd-theme = "*"
 sphinxcontrib-plantuml = "*"
@@ -41,14 +41,10 @@ Sphinx = "*"
 grip = "*"
 
 [packages]
-bumplus = ">=0.0.8"
-bumpversion = ">=0.5.3"
-docker-compose = "*"
-restview = ">=2.8.1"
-rst = ">=0.1"
+
 
 [scripts]
 test = "pytest"
 
 [requires]
-python_version = "3.7.3"
+python_version = "3.8.0"
