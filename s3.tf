@@ -1,8 +1,7 @@
 resource "aws_s3_bucket" "main" {
   provider = "aws.main"
-  bucket   = var.fqdn
+  bucket   = local.bucket_name
   acl      = "private"
-  policy   = data.aws_iam_policy_document.bucket_policy.json
 
   website {
     index_document = var.index_document
@@ -12,10 +11,22 @@ resource "aws_s3_bucket" "main" {
 
   force_destroy = var.force_destroy
 
-  tags = merge(var.tags, map("Name", var.fqdn))
+  tags = merge(
+    map(
+      "Resource", "s3",
+      "Name", "${var.namespace}-${local.bucket_name}"
+    ),
+    local.tags
+  )
 }
 
-data "aws_iam_policy_document" "bucket_policy" {
+
+resource "aws_s3_bucket_policy" "main_policy" {
+  bucket = aws_s3_bucket.main.id
+  policy = data.aws_iam_policy_document.main_policy.json
+}
+
+data "aws_iam_policy_document" "main_policy" {
   provider = aws.main
 
   statement {
@@ -26,7 +37,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
 
     resources = [
-      "arn:aws:s3:::${var.fqdn}/*",
+      "${aws_s3_bucket.main.arn}/*",
     ]
 
     condition {
@@ -50,7 +61,7 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
 
     resources = [
-      "arn:aws:s3:::${var.fqdn}/*",
+      "${aws_s3_bucket.main.arn}/*",
     ]
 
     condition {
