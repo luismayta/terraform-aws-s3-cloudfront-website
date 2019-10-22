@@ -1,6 +1,22 @@
+variable "namespace" {
+  type        = string
+  description = "The namespace for project"
+}
+
+variable "stage" {
+  type        = string
+  description = "the var for stage (Staging, Production)"
+}
+
 variable "fqdn" {
   type        = string
   description = "The FQDN of the website and also name of the S3 bucket"
+}
+
+variable "fqdn_bucket" {
+  type        = string
+  description = "The Name of s3 bucket"
+  default     = ""
 }
 
 variable "aliases" {
@@ -10,9 +26,9 @@ variable "aliases" {
 }
 
 variable "force_destroy" {
-  type        = string
+  type        = bool
   description = "The force_destroy argument of the S3 bucket"
-  default     = "false"
+  default     = false
 }
 
 variable ssl_certificate_arn {
@@ -80,5 +96,6 @@ variable "lambda_edge_arn_version" {
 }
 
 variable "lambda_edge_enabled" {
-  default = "false"
+  type    = bool
+  default = false
 }
