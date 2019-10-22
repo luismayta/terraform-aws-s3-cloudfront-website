@@ -11,7 +11,13 @@ docs.help:
 	@echo '    Docs:'
 	@echo ''
 	@echo '        docs.show                  Show restview README'
+	@echo '        docs.terraform             generated docs for terraform'
 	@echo ''
+
+docs.terraform:
+	$(call terraform-docs, ${TERRAFORM_README_FILE}, \
+			'This document gives an overview of variables used in the platform of the ${PROJECT}.', \
+			variables.tf)
 
 docs.show: clean
 	$(PIPENV_RUN) grip
