@@ -1,13 +1,13 @@
 # Since Terraform not support conditional in the resources atm
 resource "aws_cloudfront_distribution" "main" {
-  count = "${var.lambda_edge_enabled ? 0 : 1}"
+  count = var.lambda_edge_enabled ? 0 : 1
 
   provider     = aws.cloudfront
   http_version = "http2"
 
   origin {
-    origin_id   = "origin-${var.fqdn}"
-    domain_name = aws_s3_bucket.main.website_endpoint
+    origin_id   = "origin-${local.bucket_name}"
+    domain_name = aws_s3_bucket.main.bucket_regional_domain_name
 
     # https://docs.aws.amazon.com/AmazonCloudFront/latest/
     # DeveloperGuide/distribution-web-values-specify.html
@@ -51,12 +51,13 @@ resource "aws_cloudfront_distribution" "main" {
     response_page_path    = "/${var.error_document}"
   }
 
-  aliases = concat(list(var.fqdn), var.aliases)
+  aliases = concat(list(local.bucket_name), var.aliases)
 
   price_class = var.cloudfront_price_class
 
   default_cache_behavior {
-    target_origin_id = "origin-${var.fqdn}"
+
+    target_origin_id = "origin-${local.bucket_name}"
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
     compress         = true
@@ -88,18 +89,24 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   web_acl_id = var.web_acl_id
+  tags = merge(
+    map(
+      "Resource", "cloudfront",
+      "Name", "${var.namespace}-${local.bucket_name}"
+    ),
+    local.tags
+  )
 }
 
 resource "aws_cloudfront_distribution" "main-lambda-edge" {
-  count = "${var.lambda_edge_enabled ? 1 : 0}"
+  count = var.lambda_edge_enabled ? 1 : 0
 
   provider     = aws.cloudfront
   http_version = "http2"
 
   origin {
-    origin_id = "origin-${var.fqdn}"
-
-    domain_name = aws_s3_bucket.main.website_endpoint
+    origin_id   = "origin-${local.bucket_name}"
+    domain_name = aws_s3_bucket.main.bucket_regional_domain_name
 
     # Alternative ways to set the domain, probably no longer necessary
     # domain_name = aws_s3_bucket.main.bucket_domain_name
@@ -140,7 +147,7 @@ resource "aws_cloudfront_distribution" "main-lambda-edge" {
   price_class = "PriceClass_100"
 
   default_cache_behavior {
-    target_origin_id = "origin-${var.fqdn}"
+    target_origin_id = "origin-${local.bucket_name}"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     compress         = true
@@ -182,4 +189,12 @@ resource "aws_cloudfront_distribution" "main-lambda-edge" {
   }
 
   web_acl_id = var.web_acl_id
+
+  tags = merge(
+    map(
+      "Resource", "cloudfront",
+      "Name", "${var.namespace}-${local.bucket_name}"
+    ),
+    local.tags
+  )
 }
