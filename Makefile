@@ -29,7 +29,7 @@ endef
 
 PROJECT=terraform-aws-s3-cloudfront-website
 
-PYTHON_VERSION=3.7.3
+PYTHON_VERSION=3.8.0
 PYENV_NAME="${PROJECT}"
 
 # Configuration.
