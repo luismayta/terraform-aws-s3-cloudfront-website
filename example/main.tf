@@ -13,7 +13,7 @@ module "main" {
   force_destroy = "true"
 
   providers = {
-    "aws.main"       = aws.main
-    "aws.cloudfront" = aws.cloudfront
+    aws.main       = aws.main
+    aws.cloudfront = aws.cloudfront
   }
 }
