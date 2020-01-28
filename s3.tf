@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "main" {
-  provider = "aws.main"
+  provider = aws.main
   bucket   = local.bucket_name
   acl      = "private"
 
