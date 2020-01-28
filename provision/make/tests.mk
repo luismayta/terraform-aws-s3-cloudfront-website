@@ -10,4 +10,4 @@ test:
 	make test.help
 
 test.lint:
-	$(docker-dev-run) check sh -c "$(PIPENV_RUN) pre-commit run --all-files --verbose"
+	$(PIPENV_RUN) pre-commit run --all-files --verbose
