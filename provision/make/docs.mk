@@ -19,5 +19,5 @@ docs.terraform:
 			'This document gives an overview of variables used in the platform of the ${PROJECT}.', \
 			variables.tf)
 
-docs.show: clean
+docs.show:
 	$(PIPENV_RUN) grip
