@@ -33,13 +33,13 @@ test
 
 Examples commit messages:
 
-* (CF-698) chore: 0.1.0
-* (CF-698) docs: Add configuration setting
-* (CF-698) feat: Create Lambda function
-* (CF-698) fix: Retry upload on failure
-* (CF-698) refactor: Extract duplicate code
-* (CF-698) style: isort, YAPF
-* (CF-698) test: Coverage around add permissions
+* (#01) chore: 0.1.0
+* (#01) docs: Add configuration setting
+* (#01) feat: Create Lambda function
+* (#01) fix: Retry upload on failure
+* (#01) refactor: Extract duplicate code
+* (#01) style: isort, YAPF
+* (#01) test: Coverage around add permissions
 
 .. _semantic commits: https://seesparkbox.com/foundry/semantic_commit_messages
 
@@ -122,8 +122,8 @@ Try to keep history as linear as possible using a `rebase` merge strategy.
       git checkout develop
       git pull origin develop
 
-      # Update `CF-698` Branch
-      git flow feature start CF-698
+      # Update `#698` Branch
+      git flow feature start #698
       git rebase develop
 
       # Update remote Branch and Pull Request
@@ -133,9 +133,9 @@ Try to keep history as linear as possible using a `rebase` merge strategy.
 
    .. code:: bash
 
-      # Merge `CF-698` into `develop`
+      # Merge `#698` into `develop`
       git checkout develop
-      git merge --ff-only feature/CF-698
+      git merge --ff-only feature/#698
       git push
 
 #. Delete merged Branch

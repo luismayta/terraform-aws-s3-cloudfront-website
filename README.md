@@ -38,8 +38,8 @@ This project is part of our comprehensive ["Equipindustry"](https://equipindustr
     force_destroy = "true"
 
     providers = {
-      "aws.main"       = aws.main
-      "aws.cloudfront" = aws.cloudfront
+      aws.main       = aws.main
+      aws.cloudfront = aws.cloudfront
     }
   }
 ```
@@ -126,5 +126,3 @@ This project is maintained and funded by [Equipindustry, LLC][website]. Like it?
 
   [luismayta_homepage]: https://github.com/luismayta
   [luismayta_avatar]: https://github.com/luismayta.png?size=150
-
-
