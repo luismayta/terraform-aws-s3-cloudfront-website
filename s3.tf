@@ -20,7 +20,6 @@ resource "aws_s3_bucket" "main" {
   )
 }
 
-
 resource "aws_s3_bucket_policy" "main_policy" {
   bucket = aws_s3_bucket.main.id
   policy = data.aws_iam_policy_document.main_policy.json
@@ -37,7 +36,7 @@ data "aws_iam_policy_document" "main_policy" {
     ]
 
     resources = [
-      "${aws_s3_bucket.main.arn}/*",
+      format("%s/*", aws_s3_bucket.main.arn),
     ]
 
     condition {
@@ -61,7 +60,7 @@ data "aws_iam_policy_document" "main_policy" {
     ]
 
     resources = [
-      "${aws_s3_bucket.main.arn}/*",
+      format("%s/*", aws_s3_bucket.main.arn),
     ]
 
     condition {
@@ -78,4 +77,27 @@ data "aws_iam_policy_document" "main_policy" {
       identifiers = ["*"]
     }
   }
+
+  statement {
+    actions = ["s3:GetObject"]
+    resources = [
+      format("%s/*", aws_s3_bucket.main.arn),
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.main.iam_arn]
+    }
+  }
+
+  statement {
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.main.arn]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.main.iam_arn]
+    }
+  }
+
 }

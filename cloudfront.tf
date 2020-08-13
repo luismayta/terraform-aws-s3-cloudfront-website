@@ -1,3 +1,7 @@
+resource "aws_cloudfront_origin_access_identity" "main" {
+  comment = format("app for %s", local.bucket_name)
+}
+
 # Since Terraform not support conditional in the resources atm
 resource "aws_cloudfront_distribution" "main" {
   count = var.lambda_edge_enabled ? 0 : 1
@@ -5,27 +9,32 @@ resource "aws_cloudfront_distribution" "main" {
   provider     = aws.cloudfront
   http_version = "http2"
 
+
   origin {
     origin_id   = "origin-${local.bucket_name}"
     domain_name = aws_s3_bucket.main.bucket_regional_domain_name
 
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.main.cloudfront_access_identity_path
+    }
+
     # https://docs.aws.amazon.com/AmazonCloudFront/latest/
     # DeveloperGuide/distribution-web-values-specify.html
-    custom_origin_config {
-      # "HTTP Only: CloudFront uses only HTTP to access the origin."
-      # "Important: If your origin is an Amazon S3 bucket configured
-      # as a website endpoint, you must choose this option. Amazon S3
-      # doesn't support HTTPS connections for website endpoints."
-      origin_protocol_policy = "http-only"
+    # custom_origin_config {
+    #   # "HTTP Only: CloudFront uses only HTTP to access the origin."
+    #   # "Important: If your origin is an Amazon S3 bucket configured
+    #   # as a website endpoint, you must choose this option. Amazon S3
+    #   # doesn't support HTTPS connections for website endpoints."
+    #   origin_protocol_policy = "http-only"
 
-      http_port  = "80"
-      https_port = "443"
+    #   http_port  = "80"
+    #   https_port = "443"
 
-      # TODO: given the origin_protocol_policy set to `http-only`,
-      # not sure what this does...
-      # "If the origin is an Amazon S3 bucket, CloudFront always uses TLSv1.2."
-      origin_ssl_protocols = ["TLSv1.2"]
-    }
+    #   # TODO: given the origin_protocol_policy set to `http-only`,
+    #   # not sure what this does...
+    #   # "If the origin is an Amazon S3 bucket, CloudFront always uses TLSv1.2."
+    #   origin_ssl_protocols = ["TLSv1.2"]
+    # }
 
     # s3_origin_config is not compatible with S3 website hosting, if this
     # is used, /news/index.html will not resolve as /news/.
