@@ -27,16 +27,23 @@ define terraform-docs
 	terraform-docs --no-required markdown $3 $4 $5 >> $1
 endef
 
+
+TEAM := equipindustry
+REPOSITORY_DOMAIN:=github.com
+REPOSITORY_OWNER:=${TEAM}
+AWS_VAULT ?= ${TEAM}
 PROJECT=terraform-aws-s3-cloudfront-website
+PROJECT_PORT := 3000
 
 PYTHON_VERSION=3.8.0
+NODE_VERSION=12.14.1
 PYENV_NAME="${PROJECT}"
 
 # Configuration.
 SHELL ?=/bin/bash
 ROOT_DIR=$(shell pwd)
 MESSAGE:=🍺️
-MESSAGE_HAPPY:="Done! ${MESSAGE}, Now Happy Coding"
+MESSAGE_HAPPY:="Done! ${MESSAGE}, Now Happy Hacking"
 SOURCE_DIR=$(ROOT_DIR)/
 README_TEMPLATE:=$(ROOT_DIR)/templates/README.md
 
@@ -61,8 +68,7 @@ docker-dev:=$(docker-compose) -f ${PATH_DOCKER_COMPOSE}/dev.yml
 
 docker-test-run:=$(docker-test) run --rm ${DOCKER_SERVICE_TEST}
 docker-dev-run:=$(docker-dev) run --rm --service-ports ${DOCKER_SERVICE_DEV}
-
-pipenv_install:=pipenv install
+docker-yarn-run:=$(docker-dev) run --rm --service-ports ${DOCKER_SERVICE_YARN}
 
 include provision/make/*.mk
 
@@ -77,6 +83,9 @@ help:
 	@make docker.help
 	@make docs.help
 	@make test.help
+	@make utils.help
+	@make python.help
+	@make yarn.help
 
 ## Create README.md by building it from README.yaml
 readme:
@@ -85,16 +94,31 @@ readme:
 
 setup:
 	@echo "=====> install packages..."
-	pyenv local ${PYTHON_VERSION}
-	$(PIPENV_INSTALL) --dev --skip-lock
-	$(PIPENV_RUN) pre-commit install
-	$(PIPENV_RUN) pre-commit install -t pre-push
+	make python.setup
+	make python.precommit
+	make yarn.setup
 	@cp -rf provision/git/hooks/prepare-commit-msg .git/hooks/
 	@[ -e ".env" ] || cp -rf .env.example .env
 	@echo ${MESSAGE_HAPPY}
 
 environment:
 	@echo "=====> loading virtualenv ${PYENV_NAME}..."
-	pyenv local ${PYTHON_VERSION}
-	@pipenv --venv || $(PIPENV_INSTALL) --python ${PYTHON_VERSION}
+	make python.environment
 	@echo ${MESSAGE_HAPPY}
+
+.PHONY: clean
+clean:
+	@rm -f ./dist.zip
+	@rm -fr ./vendor
+
+# Show to-do items per file.
+todo:
+	@grep \
+		--exclude-dir=vendor \
+		--exclude-dir=node_modules \
+		--exclude-dir=bin \
+		--exclude=Makefile \
+		--text \
+		--color \
+		-nRo -E ' TODO:.*|SkipNow|FIXMEE:.*' .
+.PHONY: todo
