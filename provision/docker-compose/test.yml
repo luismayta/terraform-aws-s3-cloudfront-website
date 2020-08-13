@@ -6,7 +6,7 @@
 version: '3.6'
 services:
   app:
-    image: equipindustry_terraform-aws-s3-cloudfront-website-app-test
+    image: equipindustry-terraform-aws-s3-cloudfront-website-app-test
     environment: &environment
       - STAGE=testing
     build:

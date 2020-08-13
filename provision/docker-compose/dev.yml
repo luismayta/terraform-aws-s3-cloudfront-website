@@ -7,13 +7,13 @@ services:
   app:
     environment: &environment
       - STAGE=dev
-    image: equipindustry_terraform-aws-s3-cloudfront-website-app-dev
+    image: equipindustry-terraform-aws-s3-cloudfront-website-app-dev
     build:
       args:
         stage: dev
 
   check:
-    image: equipindustry_terraform-aws-s3-cloudfront-website-check-dev
+    image: equipindustry-terraform-aws-s3-cloudfront-website-check-dev
     environment: *environment
     build:
       context: .
