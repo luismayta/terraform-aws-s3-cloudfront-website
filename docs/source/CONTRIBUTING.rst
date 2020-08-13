@@ -71,13 +71,13 @@ Run all unit tests
 
 .. code-block:: bash
 
-    make test.all
+   make test.all
 
 Run unit tests specified
 
 .. code-block:: bash
 
-    make test run={{path}}
+   make test run={path}
 
 
 Code Submission
@@ -140,5 +140,5 @@ Try to keep history as linear as possible using a `rebase` merge strategy.
 
 #. Delete merged Branch
 
-.. _Issue: https://endustria.atlassian.net/projects/CF/issues
-.. _Pull Request: https://github.com/equipindustry/terraform-aws-s3-cloudfront-website/pull-requests/
+.. _Issue: https://github.com/equipindustry/terraform-aws-s3-cloudfront-website/issues
+.. _Pull Request: https://github.com/equipindustry/terraform-aws-s3-cloudfront-website/pulls
